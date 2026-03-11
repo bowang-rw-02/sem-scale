@@ -324,7 +324,16 @@ Make sure:
 If you find our paper or this tool useful in your academic work, please consider citing the corresponding paper.
 
 ```text
-[paper information]
+@article{wang2026discovering,
+      title={Discovering Semantic Latent Structures in Psychological Scales: A Response-Free Pathway to Efficient Simplification}, 
+      author={Bo Wang and Yuxuan Zhang and Yueqin Hu and Hanchao Hou and Kaiping Peng and Shiguang Ni},
+      year={2026},
+      eprint={2602.12575},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2602.12575}, 
+      doi={10.48550/arXiv.2602.12575}
+}
 ```
 
 ---
