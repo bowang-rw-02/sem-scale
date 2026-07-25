@@ -19,12 +19,12 @@ Given questionnaire item texts, the framework performs semantic encoding, cluste
 ## Interface Preview
 
 #### Idle
-<img src="./figures/idle-part12-preview.jpg">
-<img src="./figures/idle-part34-preview.jpg">
+<img src="./figures/idle-part12-v1.1.jpg">
+<img src="./figures/idle-part34-v1.1.jpg">
 
 #### Working
-<img src="./figures/working-part12-preview.jpg">
-<img src="./figures/working-part34-preview.jpg">
+<img src="./figures/working-part12-v1.1.jpg">
+<img src="./figures/working-part34-v1.1.jpg">
 
 ---
 
