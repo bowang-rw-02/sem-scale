@@ -86,7 +86,9 @@ For clarity, this README highlights only the most important folders and entry fi
 
 The current WebApp demo version uses the **Qwen online embedding API** by default. Please register for an Alibaba Cloud account and obtain an API key:
 
-`https://www.alibabacloud.com/help/en/model-studio/get-api-key`
+(Global) `https://www.alibabacloud.com/help/en/model-studio/get-api-key`
+
+(Chinese) `https://www.alibabacloud.com/help/zh/model-studio/get-api-key`
 
 The API key can be entered directly in the web interface when the app is running.
 If the WebApp is hosted for a class or demo, the service owner can set `DASHSCOPE_API_KEY` on the backend machine so users can leave the API key field blank.
