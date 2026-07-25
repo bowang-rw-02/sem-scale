@@ -12,7 +12,7 @@ This project provides **two versions** of the tool:
 Both versions implement the same core idea:  
 Given questionnaire item texts, the framework performs semantic encoding, clustering, topic modeling, and representative-item selection, and then returns a simplified short form together with topic summaries and visualization.
 
-> **Note.** The current **_WebApp_** release is the online demo version of the system. To keep deployment lightweight, the default text encoder uses the *Qwen3 embedding API* instead of the local *[Qwen3-Embedding-4B](https://huggingface.co/Qwen/Qwen3-Embedding-4B)* model. The **_Code_** release is the pure local-model version, which corresponds to the paper's setup. So their simplification results may differ.
+> **Note.** The current **_WebApp_** release is the online demo version of the system. To keep deployment lightweight, the default text encoder uses the *Qwen3 embedding API* (i.e., online version) instead of the local *[Qwen3-Embedding-4B](https://huggingface.co/Qwen/Qwen3-Embedding-4B)* model. The **_Code_** release is the pure local-model version, which corresponds to the paper's setup. So their simplification results may slightly differ.
 
 ---
 
@@ -31,8 +31,7 @@ Given questionnaire item texts, the framework performs semantic encoding, cluste
 ## Workflow and Features
 
 ### Scale-Simp WebApp
-- User inputs questionnaire items directly in the browser
-- Optionally add a shared item prefix before analysis
+- User inputs questionnaire items directly in the browser, and adds a shared item prefix before analysis
 - Framework performs semantic clustering and topic-based simplification without additional respondent data
 - Outputs representative items for each discovered topic
 - Visualizes the semantic structure of the questionnaire in 2D figure
@@ -62,6 +61,9 @@ sem-scale/
 │  ├─ package.json
 │  ├─ package-lock.json
 │  ├─ postcss.config.js
+│  ├─ start_webapp_venv_mac_linux.sh # One-step startup script for macOS/Linux
+│  ├─ start_webapp_venv_windows.bat   # One-step startup script for Windows
+│  ├─ run_backend_venv_windows.bat    # Backend helper script used by the Windows startup script
 │  ├─ tailwind.config.js
 │  ├─ tsconfig.app.json
 │  ├─ tsconfig.json
@@ -84,25 +86,23 @@ For clarity, this README highlights only the most important folders and entry fi
 
 The current WebApp demo version uses the **Qwen online embedding API** by default. Please register for an Alibaba Cloud account and obtain an API key:
 
-`https://www.alibabacloud.com/help/en/model-studio/apikey`
+`https://www.alibabacloud.com/help/en/model-studio/get-api-key`
 
 The API key can be entered directly in the web interface when the app is running.
+If the WebApp is hosted for a class or demo, the service owner can set `DASHSCOPE_API_KEY` on the backend machine so users can leave the API key field blank.
 The default embedding model in the WebApp has been specified as **`text-embedding-v4`**, which is relatively inexpensive (approximately less than **$0.07 / 1M tokens** at the time of writing).
 Source: `https://www.alibabacloud.com/help/en/model-studio/model-pricing`
 
-### 2. Backend / Code Environment
+### 2. Backend Environment
 
 Recommended:
 
-* **Anaconda or Miniconda** (strongly recommended)
-* Python 3.12 or 3.11
-
-We recommend using Anaconda/Miniconda because it allows users to create an isolated environment quickly and avoids many low-level dependency issues that may occur when installing scientific Python libraries manually.
+* Python 3.12
 
 Download links:
 
-* Anaconda: `https://www.anaconda.com/download`
-* Miniconda: `https://www.anaconda.com/docs/getting-started/miniconda/install`
+* macOS: `https://www.python.org/ftp/python/3.12.10/python-3.12.10-macos11.pkg`
+* Windows: `https://www.python.org/ftp/python/3.12.10/python-3.12.10-amd64.exe`
 
 ### 3. Frontend Environment (WebApp only)
 
@@ -115,18 +115,14 @@ The Node.js installer from the official website already includes **npm** in most
 
 Download link:
 
-* Node.js: `https://nodejs.org/en/download`
+* macOS: `https://nodejs.org/dist/v24.18.0/node-v24.18.0.pkg`
+* Windows: `https://nodejs.org/dist/v24.18.0/node-v24.18.0-x64.msi`
 
 Using the official **LTS installer** from the Node.js website is recommended for compatibility and stability.
 
 ---
 
 ## Installation
-
-Before starting, please open a command-line terminal:
-
-* **Windows**: Command Prompt, PowerShell, or Anaconda Prompt
-* **macOS / Linux**: Terminal
 
 ### Step 1. Obtain the project files
 
@@ -149,62 +145,69 @@ If using the ZIP download method, extract the folder and then navigate to the pr
 
 ## Running the WebApp Version
 
-You need **two terminals**: one for the backend and one for the frontend.
+### Step 0. Prepare storage space
 
-### Step 1. Create the Python environment
+Download and extract the ZIP package. Please make sure the computer has at least **2 GB** of available storage space.
+
+### Step 1. Install Python and Node.js
+
+Install **Node.js LTS** for the frontend and **Python 3.12** for the backend.
+
+Node.js installer:
+
+* macOS: `https://nodejs.org/dist/v24.18.0/node-v24.18.0.pkg`
+* Windows: `https://nodejs.org/dist/v24.18.0/node-v24.18.0-x64.msi`
+
+Python 3.12 installer:
+
+* macOS: `https://www.python.org/ftp/python/3.12.10/python-3.12.10-macos11.pkg`
+* Windows: `https://www.python.org/ftp/python/3.12.10/python-3.12.10-amd64.exe`
+
+### Step 2. One-click install additional libraries and start the WebApp
+
+The startup scripts will create a local Python virtual environment (`.venv`) and install backend/frontend dependencies automatically when they are missing.
+
+On **Windows**:
+
+1. Open File Explorer.
+2. Go to the `scale-simp-webapp` folder.
+3. Double-click `start_webapp_venv_windows.bat`.
+
+On **macOS / Linux**:
+
+1. Press `Command + Space`, search for **Terminal**, and open it.
+2. Navigate to the `scale-simp-webapp` folder. For example:
 
 ```bash
-conda create -n sem-simp python=3.12 -y
-conda activate sem-simp
+cd /absolute/path/to/scale-simp-webapp
 ```
 
-### Step 2. Install backend dependencies
+3. Run:
 
 ```bash
-cd scale-simp-webapp
-pip install -r requirements.txt
+chmod +x start_webapp_venv_mac_linux.sh
+./start_webapp_venv_mac_linux.sh
 ```
 
-### Step 3. Install frontend dependencies
+Note: the first installation of required libraries may take some time. After the WebApp starts, keep the terminal windows open.
 
-Since the frontend is located inside `scale-simp-webapp`, run:
+### Step 3. Open the WebApp
 
-```bash
-npm install
-```
+Open a browser and visit:
 
-### Step 4. Start the backend
+`http://localhost:5173`
 
-Open the first terminal, activate the environment, and run:
-
-```bash
-cd sem-scale/scale-simp-webapp
-conda activate sem-simp
-uvicorn backend.main:app --reload --port 8000
-```
-
-If the backend starts successfully, the API docs will be available at:
+The backend API docs are available at:
 
 `http://127.0.0.1:8000/docs`
 
-### Step 5. Start the frontend
+---
 
-Open a second terminal and run:
+### WebApp V1.1 Version Updates (2026/07/25)
 
-```bash
-cd sem-scale/scale-simp-webapp
-npm run dev
-```
-
-Vite will start the frontend development server and display a local URL, typically:
-
-`http://localhost:5173/`
-
-### Step 6. Open the app in your browser
-
-Visit:
-
-`http://localhost:5173/`
+* Added a one-click button for applying for an Alibaba Cloud Model Studio API key.
+* Added advanced embedding API settings for customizing the base URL and model name.
+* Added one-click startup scripts for macOS/Linux and Windows.
 
 ---
 
@@ -212,7 +215,9 @@ Visit:
 
 The pure-code version is intended for advanced users who prefer direct scripting and notebook-based experimentation.
 
-> **Important.** The notebook-based code version uses the local **Qwen3-Embedding-4B** model rather than the online API.  
+> **Important: GPU requirements.** 
+> 
+> The notebook-based code version uses the local **Qwen3-Embedding-4B** model rather than the online API.  
 > Users therefore need to download the model weights in advance (approximately **8 GB**, depending on the format).  
 > Running this version also requires substantially more local resources than the WebApp version. In practice, we recommend preparing around **16 GB** of available GPU memory or system memory for smooth execution.  
 > If sufficient GPU memory is not available, CPU-only execution may still be possible, but it will be significantly slower.
@@ -256,7 +261,7 @@ This notebook provides a beginner-friendly example of:
 1. Paste questionnaire items into the **Part 1 - Item Text Input** box, one item per line.
 2. Optionally enter an **Item Prefix** if your questionnaire uses a shared instruction (for example: *"Indicate how much this statement describes you:"*).
 3. Click **Start Pre-processing**.
-4. Enter your API key in **Part 2 - Embedding Model API Key**.
+4. Enter your API key in **Part 2 - Embedding Model API Key**, or leave it blank if the service owner has configured `DASHSCOPE_API_KEY` on the backend machine.
 5. Adjust model settings such as:
 
    * number of topics
@@ -301,13 +306,16 @@ Make sure frontend dependencies were installed successfully:
 npm install
 ```
 
-### `uvicorn backend.main:app --reload --port 8000` fails
+### The backend startup fails
 
 Make sure:
 
 * you are in the `scale-simp-webapp` directory
-* the `sem-simp` environment is activated
-* backend dependencies were installed via `pip install -r requirements.txt`
+* Python 3.12 has been installed successfully
+* the startup script has created the local `.venv` folder
+* backend dependencies were installed successfully during the first startup
+
+If the first installation was interrupted, run the startup script again from the `scale-simp-webapp` folder.
 
 ### The notebook version does not run
 
