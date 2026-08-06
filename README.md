@@ -199,6 +199,8 @@ Open a browser and visit:
 
 `http://localhost:5173`
 
+Then paste the example DASS scale items and prefix in `examples/dass_scale_items.txt` to corresponding text boxes, fill in the api key, and click each button in turn to run the example.
+
 The backend API docs are available at:
 
 `http://127.0.0.1:8000/docs`
